@@ -11,11 +11,11 @@
 
         <div class="inner">
             <h1>Login</h1>
-            <span th:text="${passwordHint}"></span>
+            <span th:text="${value}"></span>
             <form method="POST" action="/login" class="loginForm">
-                <span th:text="#{login.name}"/>: <br>
+                <span th:text="#{login.name}">Name:</span>: <br>
                 <input type="text" name="username"> <br>
-                <span th:text="#{login.password}"/>: <br>
+                <span th:text="#{login.password}">Passwort:</span>: <br>
                 <input type="password" name="password"> <br><br>
                 <button type="submit">OK</button> <br>
 
