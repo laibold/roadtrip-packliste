@@ -11,7 +11,7 @@ public class SharedItem extends Item {
     @ManyToOne
     private Traveller packingTraveller;
 
-    public SharedItem(String id, long version, String name, Traveller packingTraveller) {
+    public SharedItem(long id, long version, String name, Traveller packingTraveller) {
         super(id, version, name);
         this.packingTraveller = packingTraveller;
     }

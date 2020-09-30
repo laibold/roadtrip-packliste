@@ -7,7 +7,7 @@ public class Item {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @Version
     private long version;
@@ -15,7 +15,10 @@ public class Item {
     @Column
     private String name;
 
-    public Item(String id, long version, String name) {
+    @Column
+    private boolean checked;
+
+    public Item(long id, long version, String name) {
         this.id = id;
         this.version = version;
         this.name = name;
@@ -25,11 +28,11 @@ public class Item {
 
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -47,5 +50,13 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

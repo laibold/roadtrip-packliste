@@ -1,14 +1,13 @@
 package com.laibold.roadtrippackliste.model.traveller;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 public class Traveller {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @Version
     private long version;
@@ -23,17 +22,17 @@ public class Traveller {
 
     }
 
-    public Traveller(String id, long version, String name) {
+    public Traveller(long id, long version, String name) {
         this.id = id;
         this.version = version;
         this.name = name;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
