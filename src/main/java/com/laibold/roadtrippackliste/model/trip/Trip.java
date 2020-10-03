@@ -10,6 +10,9 @@ import com.laibold.roadtrippackliste.model.traveller.Traveller;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * Trip that contains participating Travellers, a shared PackingList and one PackingList per Traveller
+ */
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
@@ -22,6 +25,7 @@ public class Trip {
     private long id;
 
     @Version
+    @JsonIgnore
     private long version;
 
     @Column
@@ -77,6 +81,10 @@ public class Trip {
         return travellers;
     }
 
+    /**
+     * Sets Travellers and adds a TravellerPackingList per Traveller
+     * @param travellers Traveller to be set
+     */
     public void setTravellers(Set<Traveller> travellers) {
         this.travellers = travellers;
         for (Traveller traveller : travellers) {
@@ -84,6 +92,10 @@ public class Trip {
         }
     }
 
+    /**
+     * Adds Traveller and adds a TravellerPackingList
+     * @param traveller Traveller to be added
+     */
     public void addTraveller(Traveller traveller) {
         this.travellers.add(traveller);
         this.addTravellerPackingList(traveller);

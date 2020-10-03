@@ -1,13 +1,18 @@
 package com.laibold.roadtrippackliste.model.packingList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.laibold.roadtrippackliste.model.packingList.item.Item;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Superclass for PackingList and TravellerPackingList
+ */
 @Entity
-@org.hibernate.annotations.DiscriminatorOptions(force=true)
+@DiscriminatorOptions(force = true) //otherwise problems with subclasses and JPA/JSON
 public abstract class PackingList {
 
     @Id
@@ -15,9 +20,10 @@ public abstract class PackingList {
     private long id;
 
     @Version
+    @JsonIgnore
     private long version;
 
-    @OneToMany(mappedBy = "packingList")
+    @OneToMany(mappedBy = "packingList", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
 
     public PackingList() {
@@ -50,11 +56,18 @@ public abstract class PackingList {
     }
 
     public void setItems(List<Item> items) {
-        this.items = items;
+        for (Item item : items) {
+            this.addItem(item);
+        }
     }
 
     public void addItem(Item item) {
+        item.setPackingList(this);
         this.items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        this.items.remove(item);
     }
 
 }

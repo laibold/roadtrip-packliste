@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Participant of a Trip
+ */
 @Entity
 public class Traveller {
 
@@ -15,6 +18,7 @@ public class Traveller {
     private long id;
 
     @Version
+    @JsonIgnore
     private long version;
 
     @Column

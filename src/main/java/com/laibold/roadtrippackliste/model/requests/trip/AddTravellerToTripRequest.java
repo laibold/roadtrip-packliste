@@ -1,5 +1,9 @@
 package com.laibold.roadtrippackliste.model.requests.trip;
 
+/**
+ * Request for adding an existing traveller to an existing Trip.
+ * Needs ids of existing Traveller and Trip.
+ */
 public class AddTravellerToTripRequest {
     private long TravellerId;
     private long TripId;

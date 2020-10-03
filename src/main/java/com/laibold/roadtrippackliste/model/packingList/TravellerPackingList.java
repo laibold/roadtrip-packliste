@@ -13,12 +13,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.util.List;
 
+/**
+ * PackingList for a single Traveller.
+ * A Trip contains a TravellerPackingList for each participating Traveller.
+ */
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
 @Entity
-public class TravellerPackingList extends PackingList{
+public class TravellerPackingList extends PackingList {
 
     @OneToOne
     @JsonIdentityReference(alwaysAsId = true)

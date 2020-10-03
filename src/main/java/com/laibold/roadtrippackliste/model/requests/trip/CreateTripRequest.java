@@ -2,6 +2,10 @@ package com.laibold.roadtrippackliste.model.requests.trip;
 
 import com.laibold.roadtrippackliste.model.trip.Trip;
 
+/**
+ * Request for creating a new Trip.
+ * Needs Trip object and id of an existing traveller.
+ */
 public class CreateTripRequest {
 
     private Trip trip;

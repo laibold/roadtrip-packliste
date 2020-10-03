@@ -5,6 +5,9 @@ import com.laibold.roadtrippackliste.model.traveller.Traveller;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+/**
+ * Item for SharedPackingList, can be checked by several Travellers
+ */
 @Entity
 public class SharedItem extends Item {
 
@@ -31,4 +34,10 @@ public class SharedItem extends Item {
     public void setPackingTraveller(Traveller packingTraveller) {
         this.packingTraveller = packingTraveller;
     }
+
+    public void setChecked(boolean checked, Traveller traveller){
+        this.packingTraveller = traveller;
+        setChecked(checked);
+    }
+
 }

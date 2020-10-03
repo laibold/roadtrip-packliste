@@ -1,9 +1,13 @@
 package com.laibold.roadtrippackliste.model.packingList.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.laibold.roadtrippackliste.model.packingList.PackingList;
 
 import javax.persistence.*;
 
+/**
+ * Item a single Traveller uses in TravellerPackingList
+ */
 @Entity
 public class Item {
 
@@ -12,6 +16,7 @@ public class Item {
     private long id;
 
     @Version
+    @JsonIgnore
     private long version;
 
     @Column
@@ -21,6 +26,7 @@ public class Item {
     private boolean checked;
 
     @ManyToOne
+    @JsonIgnore
     private PackingList packingList;
 
     public Item() {
@@ -30,6 +36,13 @@ public class Item {
         this.id = id;
         this.version = version;
         this.name = name;
+    }
+
+    public Item(long id, long version, String name, PackingList packingList) {
+        this.id = id;
+        this.version = version;
+        this.name = name;
+        this.packingList = packingList;
     }
 
     public long getId() {
