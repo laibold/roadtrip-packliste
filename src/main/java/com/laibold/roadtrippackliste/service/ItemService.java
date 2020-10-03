@@ -1,7 +1,7 @@
 package com.laibold.roadtrippackliste.service;
 
 import com.laibold.roadtrippackliste.model.packingList.item.Item;
-import com.laibold.roadtrippackliste.persistence.packingList.ItemRepository;
+import com.laibold.roadtrippackliste.persistence.packingList.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class PackingList {
+@org.hibernate.annotations.DiscriminatorOptions(force=true)
+public abstract class PackingList {
 
     @Id
     @GeneratedValue

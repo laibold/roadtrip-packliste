@@ -2,6 +2,7 @@ package com.laibold.roadtrippackliste.model.packingList;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.laibold.roadtrippackliste.model.packingList.item.Item;
 import com.laibold.roadtrippackliste.model.traveller.Traveller;
@@ -24,7 +25,7 @@ public class TravellerPackingList extends PackingList{
     private Traveller traveller;
 
     @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIgnore
     private Trip trip;
 
     public TravellerPackingList() {

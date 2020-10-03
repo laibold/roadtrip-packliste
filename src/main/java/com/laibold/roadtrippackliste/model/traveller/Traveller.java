@@ -1,9 +1,6 @@
 package com.laibold.roadtrippackliste.model.traveller;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.laibold.roadtrippackliste.model.trip.Trip;
 
 import javax.persistence.*;
@@ -34,7 +31,6 @@ public class Traveller {
         this.id = id;
         this.version = version;
         this.name = name;
-//        this.trips = trips;
     }
 
     public void setId(long id) {
@@ -68,4 +64,5 @@ public class Traveller {
     public void setTrips(Set<Trip> trips) {
         this.trips = trips;
     }
+
 }
