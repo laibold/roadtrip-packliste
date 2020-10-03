@@ -6,18 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * Service for Travellers
+ */
 @Component
 public class TravellerService {
     @Autowired
     private TravellerRepository repository;
 
-    public void add(Traveller traveller) {
-        repository.save(traveller);
+    /**
+     * Adds Traveller to Repository
+     * @param traveller Traveller to add
+     */
+    public Traveller add(Traveller traveller) {
+        return repository.save(traveller);
     }
 
+    /**
+     * Gets all Travellers from Repository
+     * @return List of Travellers
+     */
     public List<Traveller> getTravellers() {
         return (List<Traveller>) repository.findAll();
+    }
+
+    /**
+     * Gets Traveller by its id
+     * @param id id
+     * @return Optional
+     */
+    public Optional<Traveller> getTraveller(long id) {
+        return repository.findById(id);
     }
 
 }

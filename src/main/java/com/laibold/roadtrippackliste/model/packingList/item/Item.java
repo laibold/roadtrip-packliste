@@ -1,4 +1,6 @@
-package com.laibold.roadtrippackliste.model.item;
+package com.laibold.roadtrippackliste.model.packingList.item;
+
+import com.laibold.roadtrippackliste.model.packingList.PackingList;
 
 import javax.persistence.*;
 
@@ -18,14 +20,16 @@ public class Item {
     @Column
     private boolean checked;
 
+    @ManyToOne
+    private PackingList packingList;
+
+    public Item() {
+    }
+
     public Item(long id, long version, String name) {
         this.id = id;
         this.version = version;
         this.name = name;
-    }
-
-    public Item() {
-
     }
 
     public long getId() {
@@ -58,5 +62,13 @@ public class Item {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public PackingList getPackingList() {
+        return packingList;
+    }
+
+    public void setPackingList(PackingList packingList) {
+        this.packingList = packingList;
     }
 }

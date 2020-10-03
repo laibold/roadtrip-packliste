@@ -1,4 +1,4 @@
-package com.laibold.roadtrippackliste.model.item;
+package com.laibold.roadtrippackliste.model.packingList.item;
 
 import com.laibold.roadtrippackliste.model.traveller.Traveller;
 
@@ -11,13 +11,13 @@ public class SharedItem extends Item {
     @ManyToOne
     private Traveller packingTraveller;
 
+    public SharedItem() {
+        super();
+    }
+
     public SharedItem(long id, long version, String name, Traveller packingTraveller) {
         super(id, version, name);
         this.packingTraveller = packingTraveller;
-    }
-
-    public SharedItem() {
-        super();
     }
 
     public SharedItem(Traveller packingTraveller) {

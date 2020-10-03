@@ -14,8 +14,8 @@ public class TravellerController {
     TravellerService service;
 
     @PostMapping
-    public void postTraveller(@RequestBody Traveller traveller) {
-        service.add(traveller);
+    public Traveller postTraveller(@RequestBody Traveller traveller) {
+        return service.add(traveller);
     }
 
     @GetMapping
