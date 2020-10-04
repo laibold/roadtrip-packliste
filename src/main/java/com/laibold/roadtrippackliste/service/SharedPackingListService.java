@@ -1,12 +1,10 @@
 package com.laibold.roadtrippackliste.service;
 
 import com.laibold.roadtrippackliste.model.packingList.SharedPackingList;
-import com.laibold.roadtrippackliste.model.packingList.item.Item;
 import com.laibold.roadtrippackliste.model.packingList.item.SharedItem;
 import com.laibold.roadtrippackliste.model.requests.packingList.CheckItemRequest;
 import com.laibold.roadtrippackliste.model.traveller.Traveller;
 import com.laibold.roadtrippackliste.persistence.packingList.SharedPackingListRepository;
-import com.laibold.roadtrippackliste.persistence.packingList.item.ItemRepository;
 import com.laibold.roadtrippackliste.persistence.packingList.item.SharedItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,12 +35,14 @@ public class SharedPackingListService {
         return null;
     }
 
-    public void removeItem(long itemId) {
+    public String removeItem(long itemId) {
         Optional<SharedItem> oItem = itemRepository.findById(itemId);
         if (oItem.isPresent()) {
             SharedItem item = oItem.get();
             itemRepository.delete(item);
+            return "success";
         } //TODO error handling
+        return "error";
     }
 
     public SharedItem setChecked(long itemId, CheckItemRequest request) {

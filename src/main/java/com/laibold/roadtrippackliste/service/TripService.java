@@ -1,5 +1,7 @@
 package com.laibold.roadtrippackliste.service;
 
+import com.laibold.roadtrippackliste.model.requests.trip.AddTravellerToTripRequest;
+import com.laibold.roadtrippackliste.model.requests.trip.CreateTripRequest;
 import com.laibold.roadtrippackliste.model.traveller.Traveller;
 import com.laibold.roadtrippackliste.model.trip.Trip;
 import com.laibold.roadtrippackliste.persistence.trip.TripRepository;
@@ -17,14 +19,24 @@ public class TripService {
     @Autowired
     private TripRepository repository;
 
+    @Autowired
+    TravellerService travellerService;
+
+    @Autowired
+    TripService tripService;
+
     /**
      * Adds trip to Repository
      *
-     * @param trip Trip to add
+     * @param request CreateTripRequest
+     * @return New Trip state
      */
-    public Trip add(Trip trip, Optional<Traveller> optionalTraveller) {
-        if (optionalTraveller.isPresent()) {
-            Traveller traveller = optionalTraveller.get();
+    public Trip add(CreateTripRequest request) {
+        Optional<Traveller> oTraveller = travellerService.getTraveller(request.getTravellerId());
+        Trip trip = request.getTrip();
+
+        if (oTraveller.isPresent()) {
+            Traveller traveller = oTraveller.get();
             trip.addTraveller(traveller);
             return repository.save(trip);
         }
@@ -52,11 +64,14 @@ public class TripService {
 
     /**
      * Adds existing Traveller to existing Trip
-     * @param oTraveller Optional Traveller
-     * @param oTrip Optional Trip
-     * @return Trip if addition succeeded
+     *
+     * @param request AddTravellerToTripRequest
+     * @return New Trip state
      */
-    public Trip addTravellerToTrip(Optional<Traveller> oTraveller, Optional<Trip> oTrip) {
+    public Trip addTravellerToTrip(AddTravellerToTripRequest request) {
+        Optional<Traveller> oTraveller = travellerService.getTraveller(request.getTravellerId());
+        Optional<Trip> oTrip = tripService.getTrip(request.getTripId());
+
         Traveller traveller;
         Trip trip;
         if (oTraveller.isPresent()) {

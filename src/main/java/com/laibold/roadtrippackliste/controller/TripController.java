@@ -24,9 +24,7 @@ public class TripController {
     @PostMapping
     @ResponseBody
     public Trip postTrip(@RequestBody CreateTripRequest request) {
-        Optional<Traveller> optionalTraveller = travellerService.getTraveller(request.getTravellerId());
-        Trip trip = request.getTrip();
-        return tripService.add(trip, optionalTraveller);
+        return tripService.add(request);
     }
 
     @GetMapping
@@ -35,11 +33,9 @@ public class TripController {
         return tripService.getTrips();
     }
 
-    @PostMapping("/addTraveller")
+    @PutMapping("/addTraveller")
     public Trip addTravellerToTrip(@RequestBody AddTravellerToTripRequest request) {
-        Optional<Traveller> optionalTraveller = travellerService.getTraveller(request.getTravellerId());
-        Optional<Trip> optionalTrip = tripService.getTrip(request.getTripId());
-        return tripService.addTravellerToTrip(optionalTraveller, optionalTrip);
+        return tripService.addTravellerToTrip(request);
     }
 
 }
