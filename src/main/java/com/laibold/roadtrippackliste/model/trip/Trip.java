@@ -101,6 +101,11 @@ public class Trip {
         this.addTravellerPackingList(traveller);
     }
 
+    public void removeTraveller(Traveller traveller) {
+        this.travellers.remove(traveller);
+        this.removeTravellerPackingList(traveller);
+    }
+
     public SharedPackingList getSharedItemPackingList() {
         return sharedItemPackingList;
     }
@@ -119,6 +124,19 @@ public class Trip {
 
     private void addTravellerPackingList(Traveller traveller) {
         this.travellerPackingLists.add(new TravellerPackingList(traveller, this));
+    }
+
+    public TravellerPackingList getTravellerPackingList(Traveller traveller) {
+        for(TravellerPackingList list : this.travellerPackingLists) {
+            if (list.getTraveller().getId() == traveller.getId()) {
+                return list;
+            }
+        }
+        return null;
+    }
+
+    private void removeTravellerPackingList(Traveller traveller) {
+        this.travellerPackingLists.removeIf(list -> list.getTraveller().getId() == traveller.getId());
     }
 
 }

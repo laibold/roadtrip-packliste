@@ -5,6 +5,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 h2/
+src/main/resources/data/test-data.sql
+
 
 ### STS ###
 .apt_generated
@@ -33,3 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
+REST tests/

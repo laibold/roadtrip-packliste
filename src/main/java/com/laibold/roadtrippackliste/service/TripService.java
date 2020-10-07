@@ -1,6 +1,13 @@
 package com.laibold.roadtrippackliste.service;
 
-import com.laibold.roadtrippackliste.model.requests.trip.AddTravellerToTripRequest;
+import com.laibold.roadtrippackliste.model.exception.badRequest.RequestBodyMissingException;
+import com.laibold.roadtrippackliste.model.exception.badRequest.TravellerIdMissingException;
+import com.laibold.roadtrippackliste.model.exception.badRequest.TripIdMissingException;
+import com.laibold.roadtrippackliste.model.exception.notFound.TravellerNotFoundException;
+import com.laibold.roadtrippackliste.model.exception.badRequest.TripMissingException;
+import com.laibold.roadtrippackliste.model.exception.notFound.TripNotFoundException;
+import com.laibold.roadtrippackliste.model.packingList.TravellerPackingList;
+import com.laibold.roadtrippackliste.model.requests.trip.TravellerTripRequest;
 import com.laibold.roadtrippackliste.model.requests.trip.CreateTripRequest;
 import com.laibold.roadtrippackliste.model.traveller.Traveller;
 import com.laibold.roadtrippackliste.model.trip.Trip;
@@ -17,13 +24,16 @@ import java.util.Optional;
 @Component
 public class TripService {
     @Autowired
-    private TripRepository repository;
+    private TripRepository tripRepository;
 
     @Autowired
     TravellerService travellerService;
 
     @Autowired
     TripService tripService;
+
+    @Autowired
+    TravellerPackingListService travellerPackingListService;
 
     /**
      * Adds trip to Repository
@@ -32,15 +42,25 @@ public class TripService {
      * @return New Trip state
      */
     public Trip add(CreateTripRequest request) {
+        if (request == null) {
+            throw new RequestBodyMissingException();
+        }
+        if (request.getTrip() == null || request.getTrip().getName() == null) {
+            throw new TripMissingException();
+        }
+        if (request.getTravellerId() == 0) {
+            throw new TravellerIdMissingException();
+        }
         Optional<Traveller> oTraveller = travellerService.getTraveller(request.getTravellerId());
         Trip trip = request.getTrip();
 
         if (oTraveller.isPresent()) {
             Traveller traveller = oTraveller.get();
             trip.addTraveller(traveller);
-            return repository.save(trip);
+            return tripRepository.save(trip);
+        } else {
+            throw new TravellerNotFoundException();
         }
-        return null;
     }
 
     /**
@@ -49,7 +69,7 @@ public class TripService {
      * @return List of Trips
      */
     public List<Trip> getTrips() {
-        return (List<Trip>) repository.findAll();
+        return (List<Trip>) tripRepository.findAll();
     }
 
     /**
@@ -58,8 +78,9 @@ public class TripService {
      * @param id id
      * @return Optional
      */
-    public Optional<Trip> getTrip(long id) {
-        return repository.findById(id);
+    public Trip getTrip(long id) {
+        Optional<Trip> oTrip = tripRepository.findById(id);
+        return oTrip.orElse(null);
     }
 
     /**
@@ -68,28 +89,69 @@ public class TripService {
      * @param request AddTravellerToTripRequest
      * @return New Trip state
      */
-    public Trip addTravellerToTrip(AddTravellerToTripRequest request) {
+    public Trip addTravellerToTrip(TravellerTripRequest request) {
+        errorHandleTravellerTripRequest(request);
         Optional<Traveller> oTraveller = travellerService.getTraveller(request.getTravellerId());
-        Optional<Trip> oTrip = tripService.getTrip(request.getTripId());
+        Optional<Trip> oTrip = tripRepository.findById(request.getTripId());
 
         Traveller traveller;
         Trip trip;
         if (oTraveller.isPresent()) {
             traveller = oTraveller.get();
         } else {
-            return null; // Traveller not found
+            throw new TravellerNotFoundException();
         }
         if (oTrip.isPresent()) {
-            Optional<Trip> oRepoTrip = repository.findById(oTrip.get().getId());
+            Optional<Trip> oRepoTrip = tripRepository.findById(oTrip.get().getId());
             if (oRepoTrip.isPresent()) {
                 trip = oRepoTrip.get();
                 trip.addTraveller(traveller);
-                return repository.save(trip);
+                return tripRepository.save(trip);
             }
         } else {
-            return null; // Trip not found
+            throw new TripNotFoundException();
         }
-        return null; // dead code
+        return null; //dead code but java
+    }
+
+    public String removeTravellerFromTrip(TravellerTripRequest request) {
+        errorHandleTravellerTripRequest(request);
+        Optional<Traveller> oTraveller = travellerService.getTraveller(request.getTravellerId());
+        Optional<Trip> oTrip = tripRepository.findById(request.getTripId());
+
+        Traveller traveller;
+        Trip trip;
+        if (oTraveller.isPresent()) {
+            traveller = oTraveller.get();
+        } else {
+            throw new TravellerNotFoundException();
+        }
+        if (oTrip.isPresent()) {
+            trip = oTrip.get();
+
+            TravellerPackingList list = trip.getTravellerPackingList(traveller);
+            travellerPackingListService.remove(list);
+            //FIXME list is not being removed
+
+            trip.removeTraveller(traveller);
+            tripRepository.save(trip);
+
+            return "success";
+        } else {
+            throw new TripNotFoundException();
+        }
+    }
+
+    private void errorHandleTravellerTripRequest(TravellerTripRequest request) {
+        if (request == null) {
+            throw new RequestBodyMissingException();
+        }
+        if (request.getTravellerId() == 0) {
+            throw new TravellerIdMissingException();
+        }
+        if (request.getTripId() == 0) {
+            throw new TripIdMissingException();
+        }
     }
 
 }
